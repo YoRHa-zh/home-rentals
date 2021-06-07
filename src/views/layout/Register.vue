@@ -77,7 +77,7 @@ export default {
           await axios.register(this.form).then((r) => {
             console.log(r.data.data);
           });
-          alert('注册成功!');
+          alert('注册成功!电话即是你之后的登录密码！');
           return this.$router.push({ name: 'Login' });
         }
         console.log('error submit!!');

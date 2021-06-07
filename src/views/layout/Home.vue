@@ -25,14 +25,10 @@
 </template>
 <script>
 import Aside from '@/views/layout/components/Aside.vue';
-import user from '@/api/user';
 
 export default {
   components: {
     Aside,
-  },
-  async created() {
-    await user.selectAll().then((r) => console.log(r));
   },
   methods: {
     out() {
@@ -45,7 +41,7 @@ export default {
 <style scoped lang="less">
 .home {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
   .aside {
     float: left;
@@ -71,6 +67,7 @@ export default {
   }
   .main {
     overflow: hidden;
+    height: 100vh;
     text-align: center;
   }
 }
