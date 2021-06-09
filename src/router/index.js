@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '@/views/layout/Login.vue';
 import Home from '@/views/layout/Home.vue';
-import VChart from '@/components/VCharts.vue';
+import Chart from '@/components/Charts.vue';
 import store from '../store';
 
 Vue.use(VueRouter);
@@ -15,9 +15,9 @@ const routes = [{
     title: '首页',
   },
   children: [{
-    name: 'VCharts',
+    name: 'Charts',
     path: '/',
-    component: VChart,
+    component: Chart,
     meta: {
       title: '首页',
       icon: 'el-icon-house',
@@ -47,6 +47,17 @@ const routes = [{
       id: 3,
     },
 
+  },
+  {
+    name: 'AddHouse',
+    path: '/addhouse',
+    component: () => import('@/components/AddHouse.vue'),
+    meta: {
+      title: '新增发布',
+      icon: 'el-icon-circle-plus-outline',
+      isUser: true,
+      id: 5,
+    },
   },
   {
     name: 'Message',

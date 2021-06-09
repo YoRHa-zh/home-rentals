@@ -22,9 +22,9 @@
       </el-table-column>
       <el-table-column prop="isDecoration" label="是否装修" width="50">
       </el-table-column>
-      <el-table-column prop="name" label="联系人" width="100">
+      <el-table-column prop="User.name" label="联系人" width="100">
       </el-table-column>
-      <el-table-column prop="phone" label="电话" width="150"> </el-table-column>
+      <el-table-column prop="User.phone" label="电话" width="150"> </el-table-column>
     </el-table>
   </div>
 </template>
@@ -34,11 +34,9 @@ import house from '@/api/house';
 
 export default {
   methods: {
-    handleData(r) {
+    async handleData(r) {
       this.tableData = r.data.data.data;
-      this.tableData.forEach((it, index) => {
-        this.tableData[index].name = it.User.name;
-        this.tableData[index].phone = it.User.phone;
+      await this.tableData.forEach((it, index) => {
         if (it.isDecoration) {
           this.tableData[index].isDecoration = '是';
         } else {
@@ -47,16 +45,13 @@ export default {
       });
     },
     async search() {
-      console.log(this.form.address);
       await house.findAll(this.form).then((r) => {
-        console.log(r.data.data.data);
         this.handleData(r);
       });
     },
   },
   async created() {
     await house.findAll(this.form).then((r) => {
-      console.log(r.data.data.data);
       this.handleData(r);
     });
   },
@@ -66,7 +61,7 @@ export default {
       tableData: [],
       form: {
         page: 1,
-        limit: 100,
+        limit: 200,
         address: '',
       },
     };
@@ -83,7 +78,6 @@ export default {
     :nth-child(1) {
       float: left;
       width: 50%;
-      display: inline-block;
     }
     :nth-child(2) {
       position: absolute;

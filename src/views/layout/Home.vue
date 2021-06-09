@@ -1,6 +1,10 @@
 <template>
   <div class="home">
     <div class="header">
+      <div class="left">
+        {{$store.state.user.role === "user"?'用户':'管理员'}}:
+        {{$store.state.user.name || $store.state.user.loginId}}
+      </div>
       <h2>房屋租赁系统</h2>
       <div class="right">
         <el-popconfirm
@@ -56,6 +60,12 @@ export default {
     text-align: center;
     background-color: rgba(0, 0, 0, 0.11);
     line-height: 60px;
+    .left{
+      float: left;
+      margin-left: 30px;
+      font-weight: bolder;
+      letter-spacing: 5px;
+    }
     .right {
       width: 100px;
       position: absolute;

@@ -12,4 +12,7 @@ export default {
   delete(id) {
     return axios.delete(`http://localhost:3000/api/rental/${id}`);
   },
+  add(params) {
+    return axios.post('http://localhost:3000/api/rental/add', params);
+  },
 };

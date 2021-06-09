@@ -43,7 +43,7 @@ export default {
       if (value === '') {
         return callback(new Error('请输入身份证号'));
       }
-      if (value.length !== 16) {
+      if (value.length !== 18) {
         return callback(new Error('身份证号码不正确'));
       }
       return callback();

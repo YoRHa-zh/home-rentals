@@ -18,14 +18,18 @@
       </el-table-column>
       <el-table-column prop="isDecoration" label="是否装修" width="50">
       </el-table-column>
-      <el-table-column prop="name" label="联系人" width="80"> </el-table-column>
-      <el-table-column prop="phone" label="电话" width="130"> </el-table-column>
+      <el-table-column prop="User.name" label="联系人" width="80">
+      </el-table-column>
+      <el-table-column prop="User.phone" label="电话" width="130">
+      </el-table-column>
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="primary" size="large"
             >编辑</el-button
           >
-          <el-button type="danger" size="large" @click="handle(scope.row)">删除</el-button>
+          <el-button type="danger" size="large" @click="handle(scope.row)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -74,20 +78,16 @@ import house from '@/api/house';
 
 export default {
   methods: {
-    handleData(r) {
+    async handleData(r) {
       this.tableData = r.data.data.data;
-      this.tableData.forEach((it, index) => {
-        this.tableData[index].name = it.User.name;
-        this.tableData[index].phone = it.User.phone;
+      this.tableData = await this.tableData.filter((it, index) => {
         if (it.isDecoration) {
           this.tableData[index].isDecoration = '是';
         } else {
           this.tableData[index].isDecoration = '否';
         }
+        return this.$store.state.user.name === it.User.name;
       });
-      this.tableData = this.tableData.filter(
-        (it) => it.User.name === this.$store.state.user.name,
-      );
     },
     handleClick(e) {
       this.dialogFormVisible = true;
@@ -95,27 +95,36 @@ export default {
     },
     handle(e) {
       this.row = e;
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
-      }).then(() => {
-        house.delete(this.row.id).then((r) => console.log(r));
-        this.$message({
-          type: 'success',
-          message: '删除成功!',
+      })
+        .then(() => {
+          house.delete(this.row.id).then((r) => {
+            console.log(r);
+            house.findAll(this.form).then((resp) => {
+              this.handleData(resp);
+            });
+          });
+          this.$message({
+            type: 'success',
+            message: '删除成功!',
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
+          });
         });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除',
-        });
-      });
     },
     async handleEdit() {
-      this.row.isDecoration = this.row.isDecoration === '是' ? 1 : 2;
-      await house.update(this.row.id, this.row).then((r) => {
-        console.log(r);
+      this.row.isDecoration = this.row.isDecoration === '是' ? 1 : 0;
+      await house.update(this.row.id, this.row).then(() => {
+        house.findAll(this.form).then((resp) => {
+          this.handleData(resp);
+        });
         this.dialogFormVisible = false;
       });
     },
@@ -132,7 +141,7 @@ export default {
       row: {},
       form: {
         page: 1,
-        limit: 100,
+        limit: 200,
         address: '',
       },
       dialogFormVisible: false,
