@@ -9,6 +9,7 @@ export default {
   deleteUser(id) {
     return axios.delete(`http://localhost:3000/api/user/${id}`);
   },
+  // 更新用户
   updateUser(id, obj) {
     return axios.put(`http://localhost:3000/api/user/${id}`, obj);
   },

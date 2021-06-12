@@ -21,7 +21,7 @@
       </el-table-column>
     </el-table>
     <div class="edit">
-      <el-dialog title="修改房屋信息" :visible.sync="dialogFormVisible">
+      <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible">
         <el-form :model="form">
           <el-form-item label="姓名" :label-width="formLabelWidth">
             <el-input v-model="row.name" autocomplete="off"></el-input>
@@ -72,7 +72,9 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          user.deleteUser(this.row.id).then((r) => console.log(r));
+          user.deleteUser(this.row.id).then((r) => {
+            console.log(r);
+          });
           this.$message({
             type: 'success',
             message: '删除成功!',
@@ -89,7 +91,6 @@ export default {
         });
       user.deleteUser(this.row.id).then((r) => console.log(r));
     },
-
   },
   async created() {
     await user.selectAll().then((r) => {

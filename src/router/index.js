@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '@/views/layout/Login.vue';
 import Home from '@/views/layout/Home.vue';
-import Chart from '@/components/Charts.vue';
+import Carousel from '@/components/Carousel.vue';
 import store from '../store';
 
 Vue.use(VueRouter);
@@ -15,9 +15,9 @@ const routes = [{
     title: '首页',
   },
   children: [{
-    name: 'Charts',
+    name: 'Carousel',
     path: '/',
-    component: Chart,
+    component: Carousel,
     meta: {
       title: '首页',
       icon: 'el-icon-house',
@@ -71,9 +71,9 @@ const routes = [{
     },
   },
   {
-    name: 'Charts',
-    path: '/',
-    component: () => import('@/components/Charts.vue'),
+    name: 'VCharts',
+    path: '/vcharts',
+    component: () => import('@/components/VCharts.vue'),
     meta: {
       title: '首页',
       icon: 'el-icon-house',

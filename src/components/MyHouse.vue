@@ -39,29 +39,80 @@
           <el-form-item label="房屋地址" :label-width="formLabelWidth">
             <el-input v-model="row.address" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="面积" :label-width="formLabelWidth">
-            <el-input v-model="row.area" autocomplete="off"></el-input>
+          <el-form-item
+            label="面积"
+            :label-width="formLabelWidth"
+            class="layout"
+          >
+            <el-input
+              v-model="row.area"
+              autocomplete="off"
+              class="a"
+            ></el-input>
           </el-form-item>
-          <el-form-item label="楼层" :label-width="formLabelWidth">
-            <el-input v-model="row.floor" autocomplete="off"></el-input>
+          <el-form-item
+            label="楼层"
+            :label-width="formLabelWidth"
+            class="layout"
+          >
+            <el-input
+              v-model="row.floor"
+              autocomplete="off"
+              class="a"
+            ></el-input>
           </el-form-item>
-          <el-form-item label="租金" :label-width="formLabelWidth">
-            <el-input v-model="row.rent" autocomplete="off"></el-input>
+          <el-form-item
+            label="租金"
+            :label-width="formLabelWidth"
+            class="layout"
+          >
+            <el-input
+              v-model="row.rent"
+              autocomplete="off"
+              class="a"
+            ></el-input>
           </el-form-item>
-          <el-form-item label="区域" :label-width="formLabelWidth">
-            <el-input v-model="row.region" autocomplete="off"></el-input>
+          <el-form-item
+            label="区域"
+            :label-width="formLabelWidth"
+            class="layout"
+          >
+            <el-input
+              v-model="row.region"
+              autocomplete="off"
+              class="a"
+            ></el-input>
           </el-form-item>
-          <el-form-item label="房型" :label-width="formLabelWidth">
-            <el-input v-model="row.model" autocomplete="off"></el-input>
+          <el-form-item
+            label="房型"
+            :label-width="formLabelWidth"
+            class="layout"
+          >
+            <el-input
+              v-model="row.model"
+              autocomplete="off"
+              class="a"
+            ></el-input>
           </el-form-item>
-          <el-form-item label="朝向" :label-width="formLabelWidth">
-            <el-input v-model="row.direction" autocomplete="off"></el-input>
+          <el-form-item
+            label="朝向"
+            :label-width="formLabelWidth"
+            class="layout"
+          >
+            <el-input
+              v-model="row.direction"
+              autocomplete="off"
+              class="a"
+            ></el-input>
           </el-form-item>
           <el-form-item label="周围环境" :label-width="formLabelWidth">
             <el-input v-model="row.enviroment" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="是否装修" :label-width="formLabelWidth">
-            <el-input v-model="row.isDecoration" autocomplete="off"></el-input>
+            <el-radio-group v-model="row.isDecoration">
+              <el-radio label="是"></el-radio>
+              <el-radio label="否"></el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -80,14 +131,18 @@ export default {
   methods: {
     async handleData(r) {
       this.tableData = r.data.data.data;
+      console.log(this.tableData);
       this.tableData = await this.tableData.filter((it, index) => {
         if (it.isDecoration) {
           this.tableData[index].isDecoration = '是';
         } else {
           this.tableData[index].isDecoration = '否';
         }
-        return this.$store.state.user.name === it.User.name;
+        return it.User !== null && this.$store.state.user.name === it.User.name;
       });
+      setTimeout(() => {
+        console.log(this.tableData);
+      }, 1);
     },
     handleClick(e) {
       this.dialogFormVisible = true;
@@ -126,6 +181,10 @@ export default {
           this.handleData(resp);
         });
         this.dialogFormVisible = false;
+        this.$message({
+          type: 'success',
+          message: '修改成功!',
+        });
       });
     },
   },
@@ -141,7 +200,7 @@ export default {
       row: {},
       form: {
         page: 1,
-        limit: 200,
+        limit: 1000,
         address: '',
       },
       dialogFormVisible: false,
@@ -172,6 +231,14 @@ export default {
     position: absolute;
     left: 50%;
     top: 50%;
+    .layout {
+      display: inline-block;
+      float: left;
+      width: 50%;
+      .a {
+        z-index: 999;
+      }
+    }
   }
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <h1>房屋租赁系统</h1>
     <h2>登录</h2>
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="账号">
@@ -43,7 +44,7 @@ export default {
           }
           console.log(r);
           this.$store.dispatch('setUserInfo', r.data.data);
-          this.$router.push('/');
+          this.$router.push('/vcharts');
         });
         return;
       }
@@ -70,6 +71,9 @@ export default {
   border: 1px solid rgb(226, 224, 224);
   margin: 30px auto;
   padding: 50px;
+  h1{
+    text-align: center;
+  }
   h2 {
     margin: 0 30px 30px 0;
   }

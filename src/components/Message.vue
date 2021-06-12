@@ -1,6 +1,6 @@
 <template>
   <div class="message">
-    <el-table :data="tableData" style="width: 100%" max-height="650">
+    <el-table :data="tableData" style="width: 100%" max-height="500">
       <el-table-column fixed prop="id" label="ID" width="150">
       </el-table-column>
       <el-table-column prop="time" label="时间" width="200"> </el-table-column>
@@ -11,6 +11,16 @@
       <el-table-column prop="User.phone" label="电话" width="300">
       </el-table-column>
     </el-table>
+    <div class="pager">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        @current-change="pageChange"
+        :page-size="messForm.limit"
+      >
+      </el-pagination>
+    </div>
     <div class="btn">
       <el-button type="primary" size="large" @click="dialogFormVisible = true"
         >我要留言</el-button
@@ -51,11 +61,18 @@ export default {
         content: '',
       },
       formLabelWidth: '120px',
+      total: 0,
+      messForm: {
+        page: 1,
+        limit: 6,
+      },
     };
   },
   async created() {
-    await Message.getAll().then((r) => {
+    await Message.getAll(this.messForm).then((r) => {
       this.tableData = r.data.data.data;
+      this.total = r.data.data.total;
+      this.tableData = this.tableData.filter((it) => it.User !== null);
     });
   },
   methods: {
@@ -63,14 +80,24 @@ export default {
       this.form.time = new Date().toLocaleString();
       await Message.add(this.form).then(() => {
         this.dialogFormVisible = false;
+        Message.getAll(this.messForm).then((r) => {
+          this.tableData = r.data.data.data;
+          this.total = r.data.data.total;
+          this.tableData = this.tableData.filter((it) => it.User !== null);
+          this.form.content = '';
+        });
         this.$message({
           type: 'success',
           message: '留言成功!',
         });
       });
-
-      await Message.getAll().then((r) => {
+    },
+    async pageChange(e) {
+      this.messForm.page = e;
+      await Message.getAll(this.messForm).then((r) => {
         this.tableData = r.data.data.data;
+        this.total = r.data.data.total;
+        this.tableData = this.tableData.filter((it) => it.User !== null);
       });
     },
   },
@@ -82,9 +109,15 @@ export default {
   height: 100%;
   overflow: scroll;
   .btn {
-    margin: 80px;
+    position: absolute;
+    right: 100px;
+    bottom: 50px;
     width: 50px;
-    float: right;
+  }
+  .pager {
+    position: absolute;
+    left: 300px;
+    bottom: 70px;
   }
 }
 </style>

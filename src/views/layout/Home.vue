@@ -37,7 +37,7 @@ export default {
   methods: {
     out() {
       this.$store.dispatch('loginOut');
-      this.$router.go(0);
+      this.$router.push('/login');
     },
   },
 };
@@ -58,7 +58,7 @@ export default {
     width: 100%;
     height: 60px;
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.11);
+    background-color: rgba(236, 227, 227, 0.897);
     line-height: 60px;
     .left{
       float: left;

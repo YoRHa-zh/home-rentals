@@ -1,10 +1,13 @@
 <template>
   <div class="userinfo">
     <div class="search">
-      <el-input v-model="form.address" placeholder="按地区关键字查询"></el-input>
+      <el-input
+        v-model="form.address"
+        placeholder="按地区关键字查询"
+      ></el-input>
       <el-button type="primary" @click="search">搜索</el-button>
     </div>
-    <el-table :data="tableData" border style="width: 100%" height="600">
+    <el-table :data="tableData" border style="width: 100%" height="511">
       <el-table-column prop="id" label="ID" width="50"> </el-table-column>
       <el-table-column prop="address" label="地址" width="150">
       </el-table-column>
@@ -24,8 +27,14 @@
       </el-table-column>
       <el-table-column prop="User.name" label="联系人" width="100">
       </el-table-column>
-      <el-table-column prop="User.phone" label="电话" width="150"> </el-table-column>
+      <el-table-column prop="User.phone" label="电话" width="150">
+      </el-table-column>
     </el-table>
+    <div class="pager">
+      <el-pagination background layout="prev, pager, next" :total="total"
+      @current-change="pageChange" :page-size="form.limit">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -42,16 +51,29 @@ export default {
         } else {
           this.tableData[index].isDecoration = '否';
         }
+        if (it.User === null) {
+          house.delete(it.id);
+        }
       });
+      this.tableData = await this.tableData.filter((it) => it.User !== null);
     },
     async search() {
       await house.findAll(this.form).then((r) => {
+        this.total = r.data.data.total;
+        this.handleData(r);
+      });
+    },
+    async pageChange(e) {
+      this.form.page = e;
+      await house.findAll(this.form).then((r) => {
+        this.total = r.data.data.total;
         this.handleData(r);
       });
     },
   },
   async created() {
     await house.findAll(this.form).then((r) => {
+      this.total = r.data.data.total;
       this.handleData(r);
     });
   },
@@ -59,9 +81,10 @@ export default {
   data() {
     return {
       tableData: [],
+      total: 0,
       form: {
         page: 1,
-        limit: 200,
+        limit: 6,
         address: '',
       },
     };
@@ -84,6 +107,11 @@ export default {
       left: 350px;
       display: inline-block;
     }
+  }
+  .pager{
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
   }
 }
 </style>

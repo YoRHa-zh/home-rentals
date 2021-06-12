@@ -1,5 +1,6 @@
 <template>
   <div class="register">
+    <h1>房屋租赁系统</h1>
     <div class="head">
     <el-page-header @back="goBack" content="返回登录页"> </el-page-header>
     </div>
@@ -96,6 +97,10 @@ export default {
 
 <style scoped lang="less">
 .register {
+  h1{
+    text-align: center;
+    margin-bottom: 10px;
+  }
   h2 {
     margin: 0 30px 30px 0;
   }
